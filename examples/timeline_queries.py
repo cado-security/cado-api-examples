@@ -57,12 +57,19 @@ def pagination(base_url, token, project_id, page=2, perpage=500):
     :param token: str, access token
     :param project_id: int, project primary key
     :param page: int, 
-    param perpage:
+    :param perpage: int, 
     """
     url = f'{base_url}/projects/{project_id}/timeline?page={page}&perpage={perpage}'
     print(f'GET - {url}')
-    result = requests.get(url)
-    result = result.json()
+    result = requests.get(
+        url,
+        headers={
+            'Authorization': 'Bearer ' + token
+        }
+    )
+    # work with return value
+    # result.status_code
+    # result = result.json()
     # result['page'] # What page are we?
     # result['per_page'] # How much shown in this page
     # result['pages'] # how many pages there's
@@ -83,8 +90,15 @@ def only_evidence_id(base_url, token, project_id, evidence_id=1):
     """
     url = f'{base_url}/projects/{project_id}/timeline?evidence_id={evidence_id}'
     print(f'GET - {url}')
-    result = requests.get(url)
-    result = result.json()
+    result = requests.get(
+        url,
+        headers={
+            'Authorization': 'Bearer ' + token
+        }
+    )
+    # work with return value
+    # result.status_code
+    # result = result.json()
     # result['results'] # Timeline results
     return result
 
@@ -102,8 +116,15 @@ def severity_range(base_url, token, project_id, severity=5):
     """
     url = f'{base_url}/projects/{project_id}/timeline?severity=5'
     print(f'GET - {url}')
-    result = requests.get(url)
-    result = result.json()
+    result = requests.get(
+        url,
+        headers={
+            'Authorization': 'Bearer ' + token
+        }
+    )
+    # work with return value
+    # result.status_code
+    # result = result.json()
     # result['results'] # results with severity from 1-5
     return result
 
@@ -123,8 +144,15 @@ def time_range(base_url, token, project_id, from_t=1581850873, to_t=1613473273):
     """
     url = f'{base_url}/projects/{project_id}/timeline?from_timestamp={from_t}&to_timestamp={to_t}'
     print(f'GET - {url}')
-    result = requests.get(url)
-    result = result.json()
+    result = requests.get(
+        url,
+        headers={
+            'Authorization': 'Bearer ' + token
+        }
+    )
+    # work with return value
+    # result.status_code
+    # result = result.json()
     # result['results'] # results from 16.2.2020 to 16.2.2021
     return result
 
@@ -146,8 +174,15 @@ def pivot_results(
     """
     url = f'{base_url}/projects/{project_id}/timeline?pivot={pivot}'
     print(f'GET - {url}')
-    result = requests.get(url)
-    result = result.json()
+    result = requests.get(
+        url,
+        headers={
+            'Authorization': 'Bearer ' + token
+        }
+    )
+    # work with return value
+    # result.status_code
+    # result = result.json()
     return result
 
 
@@ -161,8 +196,15 @@ def point_in_time(base_url, token, project_id):
     """
     url = f'{base_url}/projects/{project_id}/timeline?from_timestamp=0'
     print(f'GET - {url}')
-    result = requests.get(url)
-    result = result.json()
+    result = requests.get(
+        url,
+        headers={
+            'Authorization': 'Bearer ' + token
+        }
+    )
+    # work with return value
+    # result.status_code
+    # result = result.json()
     # result['results'] # Should return results as if we won't send any time range because we start from the very beggening (0)
     return result
 
@@ -187,8 +229,15 @@ def specific_field_value(
     """
     url = f'{base_url}/projects/{project_id}/timeline?{field}={value}'
     print(f'GET - {url}')
-    result = requests.get(url)
-    result = result.json()
+    result = requests.get(
+        url,
+        headers={
+            'Authorization': 'Bearer ' + token
+        }
+    )
+    # work with return value
+    # result.status_code
+    # result = result.json()
     return result
 
 
@@ -210,8 +259,15 @@ def value_across_fields(
     """
     url = f'{base_url}/projects/{project_id}/timeline?query={query}'
     print(f'GET - {url}')
-    result = requests.get(url)
-    result = result.json()
+    result = requests.get(
+        url,
+        headers={
+            'Authorization': 'Bearer ' + token
+        }
+    )
+    # work with return value
+    # result.status_code
+    # result = result.json()
     return result
 
 
@@ -225,7 +281,7 @@ if __name__ == '__main__':
         config.API_URL,
         config.USERNAME,
         config.PASSWORD
-    )
+    ).json()
     access_token = tokens['token']
 
     print('***************<[--PAFINATION RESULTS--]>***************')
@@ -234,4 +290,7 @@ if __name__ == '__main__':
         token=access_token,
         project_id=config.TEST_PROJECT_ID
     )
-    print(result)
+    if result.status_code == 200:
+        print(result.json())
+    else:
+        print('Cannot get timeline result: ', result.status_code)

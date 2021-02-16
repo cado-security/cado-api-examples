@@ -42,7 +42,10 @@ def generate_fresh_access_token(base_url, username, password):
     }
     print(f'POST - {url}')
     result = requests.post(url, json=body_params)
-    result = result.json()
+
+    # work with return value
+    # result.status_code
+    # result = result.json()
     # result['token'] # This is the access token
     # result['refresh_token']
     # result['user_id']
@@ -64,7 +67,9 @@ def generate_access_token_using_refresh_token(base_url, refresh_token):
             'Authorization': 'Bearer ' + refresh_token
         }
     )
-    result = result.json()
+    # work with return value
+    # result.status_code
+    # result = result.json()
     # result['access_token'] # This is the new, not fresh, access token
     return result
 
@@ -76,7 +81,7 @@ if __name__ == '__main__':
         config.API_URL,
         config.USERNAME,
         config.PASSWORD
-    )
+    ).json()
     access_token = tokens['token']
     refresh_token = tokens['refresh_token']
     print('Fresh access token: ' + access_token)
@@ -84,5 +89,5 @@ if __name__ == '__main__':
     result = generate_access_token_using_refresh_token(
         base_url=config.API_URL,
         refresh_token=refresh_token
-    )
+    ).json()
     print('Not fresh access token: ' + result['access_token'])
