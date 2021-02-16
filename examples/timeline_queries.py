@@ -1,15 +1,12 @@
 # Copyright 2020 Cado Security Ltd. All rights reserved #
 #########################################################
-#   This module shows different ways to retrieve data   #
-#          from the timeline api resource               #
+#       Examples for retrieving data from timeline      #
 #########################################################
-#                       Notes:                          #
-# This url of this resource is:                         #
-# /projects/<int:project_id/timeline                    #
-#######################################################
-
-# We can query the timeline by the following arguments:
-
+#                      Base URL:                        #
+#         /projects/<int:project_id>/timeline           #
+#########################################################
+#                  QUICK EXPLANATION:                   #
+# We can query the timeline by the following arguments: #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # 1) `from_timestamp`
 # 2) `to_timestamp`
@@ -17,29 +14,36 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # 3) `severity` and `alarm_severity`
 ## ->
-### `severity` is a range, so given 5 it will be 1-5 (there's up to 10 different severities)
-### If you want a specific severity (not a range), you can use the arg `alarm_severity` instead
+### `severity` is a range, so by given 5
+### the range will be between 1-5 (up to 10 severities)
+### If you want a specific severity (not a range),
+### you can use the arg `alarm_severity` instead
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # 4) `evidence_id`
 ## -> Get events only from a specific evidence
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # 5) `query`
 ## ->
-### Search for query (str) across all fields, so for example, if query=127.0.0.1
-### It will search 127.0.0.1 in all the timeline columns (short, filename, etc...)
-### We can also query a speceifc field, instead of cross-fields like with the `query` arg.
+### Search for query (string) across all fields,
+### so for example, if query=127.0.0.1 It will search it
+### in all the timeline columns (short, filename, etc...).
+### Instead, We can also search in a specific field
 ### The supported arugements for specific field-search are: 
 ### `tag`, `user`, `executed_process`, `source_hostname`
-### (We can add more, it's just a white list of fields that are allowed to search by)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # 6) `pivot`
 ## ->
-### pivot is a unique time filtering, given a pivot argument (unix timestamp format)
-### It will show results from the time of the given pivot +- 2 minutes
+### pivot is a unique time filtering,
+### given a pivot argument (unix timestamp format)
+### it will return results that occured in the range of
+### two minutes before and after the given pivot
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # PAGINATION - we can paginate the results using the args:
 # 7) page
 # 8) perpage (default is 100 per page)
+
+#########################################################
+
 import requests
 
 
@@ -55,7 +59,9 @@ def pagination(base_url, token, project_id, page=2, perpage=500):
     :param page: int, 
     param perpage:
     """
-    result = requests.get(f'{BASE_URL}?page={page}&perpage={perpage}')
+    url = f'{base_url}?page={page}&perpage={perpage}'
+    print(f'GET - {url}')
+    result = requests.get(url)
     result = result.json()
     # result['page'] # What page are we?
     # result['per_page'] # How much shown in this page
@@ -65,7 +71,7 @@ def pagination(base_url, token, project_id, page=2, perpage=500):
     return result
 
 
-def filter_by_evidence_id(base_url, token, project_id, evidence_id=1):
+def only_evidence_id(base_url, token, project_id, evidence_id=1):
     """Get timeline events for a specific evidence
 
     -> for the purpose of the example, we provided defaults to the function parameters
@@ -75,13 +81,15 @@ def filter_by_evidence_id(base_url, token, project_id, evidence_id=1):
     :param project_id: int, project primary key
     :param evidence_id: int,
     """
-    result = requests.get(f'{BASE_URL}?evidence_id={e_evidence_idid}')
+    url = f'{base_url}?evidence_id={evidence_id}'
+    print(f'GET - {url}')
+    result = requests.get(url)
     result = result.json()
     # result['results'] # Timeline results
     return result
 
 
-def filter_by_severity_range(base_url, token, project_id, severity=5):
+def severity_range(base_url, token, project_id, severity=5):
     """Get timeline events that are in a severity range
     
     -> for the purpose of the example, we provided defaults to the function parameters
@@ -92,13 +100,15 @@ def filter_by_severity_range(base_url, token, project_id, severity=5):
     :param project_id: int, project primary key
     :param severity: int, top range for the severity attribute
     """
-    result = requests.get(f'{BASE_URL}?severity=5')
+    url = f'{base_url}?severity=5'
+    print(f'GET - {url}')
+    result = requests.get(url)
     result = result.json()
     # result['results'] # results with severity from 1-5
     return result
 
 
-def filter_by_time_range(base_url, token, project_id, from_t=1581850873, to_t=1613473273):
+def time_range(base_url, token, project_id, from_t=1581850873, to_t=1613473273):
     """Get timeline events that between time range
     time range defined by unix timestamp https://www.unixtimestamp.com/
 
@@ -111,7 +121,9 @@ def filter_by_time_range(base_url, token, project_id, from_t=1581850873, to_t=16
     :param from_t: int, unix timestamp, the beginning of the range
     :param to_t: int, unix timestamp, the end of the range
     """
-    result = requests.get(f'{BASE_URL}?from_timestamp=1581850873&to_timestamp=1613473273')
+    url = f'{base_url}?from_timestamp={from_t}&to_timestamp={to_t}'
+    print(f'GET - {url}')
+    result = requests.get(url)
     result = result.json()
     # result['results'] # results from 16.2.2020 to 16.2.2021
     return result
@@ -132,12 +144,14 @@ def pivot_results(
     :param project_id: int, project primary key
     :param pivot: int, unix timestamp
     """
-    result = requests.get(f'{BASE_URL}?pivot={pivot}')
+    url = f'{base_url}?pivot={pivot}'
+    print(f'GET - {url}')
+    result = requests.get(url)
     result = result.json()
     return result
 
 
-def filter_by_point_in_time(base_url, token, project_id):
+def point_in_time(base_url, token, project_id):
     """Get timeline events from a a specific point in time
     this examples shows that we can use from_timestamp OR to_timestamp as individuals
 
@@ -145,13 +159,15 @@ def filter_by_point_in_time(base_url, token, project_id):
     :param token: str, access token
     :param project_id: int, project primary key
     """
-    result = requests.get(f'{BASE_URL}?from_timestamp=0')
+    url = f'{base_url}?from_timestamp=0'
+    print(f'GET - {url}')
+    result = requests.get(url)
     result = result.json()
     # result['results'] # Should return results as if we won't send any time range because we start from the very beggening (0)
     return result
 
 
-def filter_by_specific_field_value(
+def specific_field_value(
     base_url,
     token,
     project_id,
@@ -169,12 +185,14 @@ def filter_by_specific_field_value(
     :param field: str, the field to search in
     :param value: str, the value to search in the field^
     """
-    result = requests.get(f'{BASE_URL}?{field}={value}')
+    url = f'{base_url}?{field}={value}'
+    print(f'GET - {url}')
+    result = requests.get(url)
     result = result.json()
     return result
 
 
-def filter_by_value_across_fields(
+def value_across_fields(
     base_url,
     token,
     project_id,
@@ -190,10 +208,24 @@ def filter_by_value_across_fields(
     :param project_id: int, project primary key
     :param query: str, 
     """
-    result = requests.get(f'{BASE_URL}?query={query}')
+    url = f'{base_url}?query={query}'
+    print(f'GET - {url}')
+    result = requests.get(url)
     result = result.json()
     return result
 
 
 if __name__ == '__main__':
-    import config
+    import config 
+    from authentication import generate_fresh_access_token
+
+    tokens = generate_fresh_access_token(
+        config.BASE_URL,
+        config.USERNAME,
+        config.PASSWORD
+    )
+    access_token = tokens['token']
+
+    print('***************<[--PAFINATION RESULTS--]>***************')
+    result = pagination(base_url=config.BASE_URL, token=access_token)
+    print(result)
