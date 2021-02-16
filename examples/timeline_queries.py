@@ -65,7 +65,7 @@ def pagination(base_url, token, project_id, page=2, perpage=500):
     return result
 
 
-def filter_by_evidence_id(base_url, token, project_id, e_id=1):
+def filter_by_evidence_id(base_url, token, project_id, evidence_id=1):
     """Get timeline events for a specific evidence
 
     -> for the purpose of the example, we provided defaults to the function parameters
@@ -73,8 +73,9 @@ def filter_by_evidence_id(base_url, token, project_id, e_id=1):
     :param base_url: str, api ip
     :param token: str, access token
     :param project_id: int, project primary key
+    :param evidence_id: int,
     """
-    result = requests.get(f'{BASE_URL}?evidence_id={e_id}')
+    result = requests.get(f'{BASE_URL}?evidence_id={e_evidence_idid}')
     result = result.json()
     # result['results'] # Timeline results
     return result
@@ -106,10 +107,33 @@ def filter_by_time_range(base_url, token, project_id, from_t=1581850873, to_t=16
     :param base_url: str, api ip
     :param token: str, access token
     :param project_id: int, project primary key
+    :param from_t: int, unix timestamp lower range
+    :param from_t: int, unix timestamp, the beginning of the range
+    :param to_t: int, unix timestamp, the end of the range
     """
     result = requests.get(f'{BASE_URL}?from_timestamp=1581850873&to_timestamp=1613473273')
     result = result.json()
     # result['results'] # results from 16.2.2020 to 16.2.2021
+    return result
+
+
+def pivot_results(
+    base_url,
+    token,
+    project_id,
+    pivot=1581850873
+    ):
+    """Get timeline events that occured 2 minutes beforer and after the given pivot timestamp
+
+    -> for the purpose of the example, we provided defaults to the function parameters
+
+    :param base_url: str, api ip
+    :param token: str, access token
+    :param project_id: int, project primary key
+    :param pivot: int, unix timestamp
+    """
+    result = requests.get(f'{BASE_URL}?pivot={pivot}')
+    result = result.json()
     return result
 
 
@@ -148,3 +172,28 @@ def filter_by_specific_field_value(
     result = requests.get(f'{BASE_URL}?{field}={value}')
     result = result.json()
     return result
+
+
+def filter_by_value_across_fields(
+    base_url,
+    token,
+    project_id,
+    query='127.0.0.1'
+    ):
+    """Get timeline events that has the gevin value in one of the fields,
+
+    -> for the purpose of the example, we provided defaults to the function parameters
+        the default here is to search the ip `127.0.0.1` in the events
+
+    :param base_url: str, api ip
+    :param token: str, access token
+    :param project_id: int, project primary key
+    :param query: str, 
+    """
+    result = requests.get(f'{BASE_URL}?query={query}')
+    result = result.json()
+    return result
+
+
+if __name__ == '__main__':
+    import config
