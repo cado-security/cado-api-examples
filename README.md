@@ -1,9 +1,9 @@
 # Cado API Code Examples
-This repository contains code examples for integrate with Cado API using python and the requests library.
-The examples assumes that you have a the Cado Response platform and a user with admin privileges.
+This repository contains code examples for integration with the Cado API using Python and the Requests library.
+The examples assumes that you have the Cado Response platform and a user with admin privileges.
 
 # Getting started
-Before you can run any of the examples under the `./examples` folder you must follow those steps:
+Before you can run any of the examples under the `./examples` folder you must follow these steps:
 
 1. Prepare your platform:
 Make sure your Cado Response platform is up and running and that you have an existing project with evidence imported (required for some of the examples, e.g. timeline searching examples).
@@ -30,4 +30,4 @@ python3 examples/overall_example.py
 python3 examples/timeline_queries.py
 ```
 
-> There are many examples and explanations inside each module, some of the exampples not run automatically when executing the module as in the above^ so please open and read each module for explantaion examples on a specific topic.
+> There are many examples and explanations inside each module. Some of the examples not run automatically when executing the module as in the above^ so please open and read each module for explantaion examples on a specific topic.
