@@ -21,14 +21,14 @@
 ### If you want a specific severity (not a range), you can use the arg `alarm_severity` instead
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # 4) `evidence_id`
-## -> Get events only from a specefic evidence
+## -> Get events only from a specific evidence
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # 5) `query`
 ## ->
 ### Search for query (str) across all fields, so for example, if query=127.0.0.1
 ### It will search 127.0.0.1 in all the timeline columns (short, filename, etc...)
 ### We can also query a speceifc field, instead of cross-fields like with the `query` arg.
-### The supported arugements for specefic field-search are: 
+### The supported arugements for specific field-search are: 
 ### `tag`, `user`, `executed_process`, `source_hostname`
 ### (We can add more, it's just a white list of fields that are allowed to search by)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -40,73 +40,111 @@
 # PAGINATION - we can paginate the results using the args:
 # 7) page
 # 8) perpage (default is 100 per page)
-
 import requests
-import config
 
 
-def pagination(token):
+def pagination(base_url, token, project_id, page=2, perpage=500):
+    """Get timeline events and modify the default pagination parameters
+
+    -> for the purpose of the example, we provided defaults to the function parameters
+       the defaults here is to get the second page of the timeline when there's 500 events per page
+
+    :param base_url: str, api ip
+    :param token: str, access token
+    :param project_id: int, project primary key
+    :param page: int, 
+    param perpage:
     """
+    result = requests.get(f'{BASE_URL}?page={page}&perpage={perpage}')
+    result = result.json()
+    # result['page'] # What page are we?
+    # result['per_page'] # How much shown in this page
+    # result['pages'] # how many pages there's
+    # result['total'] # All total result for that specific searchj
+    # result['results'] # Timeline results
+    return result
+
+
+def filter_by_evidence_id(base_url, token, project_id, e_id=1):
+    """Get timeline events for a specific evidence
+
+    -> for the purpose of the example, we provided defaults to the function parameters
+
+    :param base_url: str, api ip
+    :param token: str, access token
+    :param project_id: int, project primary key
     """
-    result = requests.get(
-        f'{BASE_URL}?page=2&perpage=500'
-    ).json()
-    result['page'] # What page are we?
-    result['per_page'] # How much shown in this page
-    result['pages'] # how many pages there's
-    result['total'] # All total result for that specefic searchj
-    result['results'] # Timeline results
+    result = requests.get(f'{BASE_URL}?evidence_id={e_id}')
+    result = result.json()
+    # result['results'] # Timeline results
+    return result
 
 
-#################
-# Results for a specefic evidence id:
-result = requests.get(
-    f'{BASE_URL}?evidence_id=1'
-).json()
-result['results'] # Timeline results
+def filter_by_severity_range(base_url, token, project_id, severity=5):
+    """Get timeline events that are in a severity range
+    
+    -> for the purpose of the example, we provided defaults to the function parameters
+       The default here is to filter by severity between 1-5
+
+    :param base_url: str, api ip
+    :param token: str, access token
+    :param project_id: int, project primary key
+    :param severity: int, top range for the severity attribute
+    """
+    result = requests.get(f'{BASE_URL}?severity=5')
+    result = result.json()
+    # result['results'] # results with severity from 1-5
+    return result
 
 
-#################
-# severity RANGE:
-result = requests.get(
-    f'{BASE_URL}?severity=5'
-).json()
-result['results'] # Will show results with severity from 1-5
+def filter_by_time_range(base_url, token, project_id, from_t=1581850873, to_t=1613473273):
+    """Get timeline events that between time range
+    time range defined by unix timestamp https://www.unixtimestamp.com/
+
+    -> for the purpose of the example, we provided defaults to the function parameters
+
+    :param base_url: str, api ip
+    :param token: str, access token
+    :param project_id: int, project primary key
+    """
+    result = requests.get(f'{BASE_URL}?from_timestamp=1581850873&to_timestamp=1613473273')
+    result = result.json()
+    # result['results'] # results from 16.2.2020 to 16.2.2021
+    return result
 
 
-# ################# NOTE: There's small problem with that example, it's a quick fix, I'll do it this week
-# # SPECIFIC severity:
-# result = requests.get(
-#     f'{BASE_URL}?alarm_severity=3'
-# ).json()
-# print(result)
-# result['results'] # Will show only results with severity 3
+def filter_by_point_in_time(base_url, token, project_id):
+    """Get timeline events from a a specific point in time
+    this examples shows that we can use from_timestamp OR to_timestamp as individuals
+
+    :param base_url: str, api ip
+    :param token: str, access token
+    :param project_id: int, project primary key
+    """
+    result = requests.get(f'{BASE_URL}?from_timestamp=0')
+    result = result.json()
+    # result['results'] # Should return results as if we won't send any time range because we start from the very beggening (0)
+    return result
 
 
-#################
-# TIME range severity:
-result = requests.get(
-    f'{BASE_URL}?from_timestamp=0&to_timestamp=5000'
-).json()
-result['results'] # Probs won't shows results as we don't have things between 0-5000 timestamp, but this is the concept
+def filter_by_specific_field_value(
+    base_url,
+    token,
+    project_id,
+    field='tag',
+    value='file'
+    ):
+    """Get timeline events filter by specific field value,
 
+    -> for the purpose of the example, we provided defaults to the function parameters
+        the default here is to search `File` events by looking in the `tag` column
 
-#################
-# TIME range severity 2:
-# We can also use only one of the timeranges (from_timestamp or to_timestamp)
-result = requests.get(
-    f'{BASE_URL}?from_timestamp=0'
-).json()
-result['results'] # Should return results as if we won't send any time range because we start from the very beggening (0)
-
-
-#################
-# Specefic fiels search
-result = requests.get(
-    f'{BASE_URL}?tag=File'
-).json()
-result['results'] # Results with tags that contains the word `File`, prob `File Access`..
-
-
-
-
+    :param base_url: str, api ip
+    :param token: str, access token
+    :param project_id: int, project primary key
+    :param field: str, the field to search in
+    :param value: str, the value to search in the field^
+    """
+    result = requests.get(f'{BASE_URL}?{field}={value}')
+    result = result.json()
+    return result
