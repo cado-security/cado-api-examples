@@ -7,12 +7,12 @@
 #########################################################
 # There are several ways to authenticate with Cado API,
 # most common and best practice is to use Access Tokens
-# which can be generated in using two different ways:
+# which can be generated using two different ways:
 # 1) Using Username and Password
 # 2) Using Refresh Token
 # Initialy, you need to authenticate with the api
-# using the first method (1^) which will generate
-# access token and some other token called "refresh token".
+# using the first method (1^) which will generate "access
+# token" and one additional token called "refresh token".
 # The access token will expire after 15 minutes and then
 # you will need to re-generate it. you can do so using
 # the same method as before (using username and passowrd)
