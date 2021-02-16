@@ -59,7 +59,7 @@ def pagination(base_url, token, project_id, page=2, perpage=500):
     :param page: int, 
     param perpage:
     """
-    url = f'{base_url}?page={page}&perpage={perpage}'
+    url = f'{base_url}/projects/{project_id}/timeline?page={page}&perpage={perpage}'
     print(f'GET - {url}')
     result = requests.get(url)
     result = result.json()
@@ -81,7 +81,7 @@ def only_evidence_id(base_url, token, project_id, evidence_id=1):
     :param project_id: int, project primary key
     :param evidence_id: int,
     """
-    url = f'{base_url}?evidence_id={evidence_id}'
+    url = f'{base_url}/projects/{project_id}/timeline?evidence_id={evidence_id}'
     print(f'GET - {url}')
     result = requests.get(url)
     result = result.json()
@@ -100,7 +100,7 @@ def severity_range(base_url, token, project_id, severity=5):
     :param project_id: int, project primary key
     :param severity: int, top range for the severity attribute
     """
-    url = f'{base_url}?severity=5'
+    url = f'{base_url}/projects/{project_id}/timeline?severity=5'
     print(f'GET - {url}')
     result = requests.get(url)
     result = result.json()
@@ -121,7 +121,7 @@ def time_range(base_url, token, project_id, from_t=1581850873, to_t=1613473273):
     :param from_t: int, unix timestamp, the beginning of the range
     :param to_t: int, unix timestamp, the end of the range
     """
-    url = f'{base_url}?from_timestamp={from_t}&to_timestamp={to_t}'
+    url = f'{base_url}/projects/{project_id}/timeline?from_timestamp={from_t}&to_timestamp={to_t}'
     print(f'GET - {url}')
     result = requests.get(url)
     result = result.json()
@@ -144,7 +144,7 @@ def pivot_results(
     :param project_id: int, project primary key
     :param pivot: int, unix timestamp
     """
-    url = f'{base_url}?pivot={pivot}'
+    url = f'{base_url}/projects/{project_id}/timeline?pivot={pivot}'
     print(f'GET - {url}')
     result = requests.get(url)
     result = result.json()
@@ -159,7 +159,7 @@ def point_in_time(base_url, token, project_id):
     :param token: str, access token
     :param project_id: int, project primary key
     """
-    url = f'{base_url}?from_timestamp=0'
+    url = f'{base_url}/projects/{project_id}/timeline?from_timestamp=0'
     print(f'GET - {url}')
     result = requests.get(url)
     result = result.json()
@@ -185,7 +185,7 @@ def specific_field_value(
     :param field: str, the field to search in
     :param value: str, the value to search in the field^
     """
-    url = f'{base_url}?{field}={value}'
+    url = f'{base_url}/projects/{project_id}/timeline?{field}={value}'
     print(f'GET - {url}')
     result = requests.get(url)
     result = result.json()
@@ -208,7 +208,7 @@ def value_across_fields(
     :param project_id: int, project primary key
     :param query: str, 
     """
-    url = f'{base_url}?query={query}'
+    url = f'{base_url}/projects/{project_id}/timeline?query={query}'
     print(f'GET - {url}')
     result = requests.get(url)
     result = result.json()
@@ -216,16 +216,22 @@ def value_across_fields(
 
 
 if __name__ == '__main__':
+    # This example assume that there's an existing project
+    # in the platform and some test data to work with
     import config 
     from authentication import generate_fresh_access_token
 
     tokens = generate_fresh_access_token(
-        config.BASE_URL,
+        config.API_URL,
         config.USERNAME,
         config.PASSWORD
     )
     access_token = tokens['token']
 
     print('***************<[--PAFINATION RESULTS--]>***************')
-    result = pagination(base_url=config.BASE_URL, token=access_token)
+    result = pagination(
+        base_url=config.API_URL,
+        token=access_token,
+        project_id=config.TEST_PROJECT_ID
+    )
     print(result)
