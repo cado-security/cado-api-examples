@@ -30,4 +30,4 @@ python3 examples/overall_example.py
 python3 examples/timeline_queries.py
 ```
 
-> There are many examples and explanations inside each module. Some of the examples not run automatically when executing the module as in the above^ so please open and read each module for explantaion examples on a specific topic.
+> There are many examples and explanations inside each module. Only few of the examples run automatically when executing the module as in the above^ so please open and read each module for full explantaion and examples on a specific topic.
