@@ -48,3 +48,41 @@ def generate_fresh_access_token(base_url, username, password):
     # result['user_id']
     return result
 
+
+def generate_access_token_using_refresh_token(base_url, refresh_token):
+    """Generate access token using refresh token
+    -> this token is NOT FRESH
+
+    :param base_url: str, api ip
+    :param refresh_token: str,
+    """
+    url = base_url + '/auth/refresh'
+    print(f'POST - {url}')
+    result = requests.post(
+        url,
+        headers={
+            'Authorization': 'Bearer ' + refresh_token
+        }
+    )
+    result = result.json()
+    # result['access_token'] # This is the new, not fresh, access token
+    return result
+
+
+if __name__ == '__main__':
+    import config 
+
+    tokens = generate_fresh_access_token(
+        config.API_URL,
+        config.USERNAME,
+        config.PASSWORD
+    )
+    access_token = tokens['token']
+    refresh_token = tokens['refresh_token']
+    print('Fresh access token: ' + access_token)
+
+    result = generate_access_token_using_refresh_token(
+        base_url=config.API_URL,
+        refresh_token=refresh_token
+    )
+    print('Not fresh access token: ' + result['access_token'])
