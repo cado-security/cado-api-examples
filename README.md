@@ -13,7 +13,9 @@ Make sure your Cado Response platform is up and running and that you have an exi
 git clone https://github.com/cado-security/cado-api-examples.git
 ```
 
-3. Edit `the examples/config.py` file to fit to your platform:
+3. Make sure you have python3 installed
+
+4. Edit `the examples/config.py` file to fit to your platform:
 ```python
 PLATFORM_IP = '127.0.0.1'                   # Change to the ip of the platform
 API_URL = f'http://{PLATFORM_IP}:5000'      # Don't edit this value
@@ -22,7 +24,7 @@ PASSWORD = ''                               # Password for the user^
 TEST_PROJECT_ID = 1                         # project that already exists
 ```
 
-4. Run examples:
+5. Run examples:
 ```
 python3 examples/overall_example.py
 ```
