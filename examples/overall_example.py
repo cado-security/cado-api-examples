@@ -2,9 +2,9 @@
 #############################################################
 #                      Overall example                      #
 #############################################################
-# This is a overall example that use a combination of
-# sub-examples from other modules in the folder (/examples)
-# Check that folder(^) for more examples on a specific topic.
+# This is a overall example that use a combination of sub-
+# examples from the other modules in this folder (/examples).
+# Check the folder(^) for more examples on a specific topic.
 #############################################################
 #                          STAGES:                          #
 #  1) Authenticate with the api
