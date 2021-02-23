@@ -94,7 +94,7 @@ def get_instances(base_url, token, project_id):
 
     :param str base_url: api ip
     :param str token: access token
-    :param project_id: int, project primary key
+    :param int project_id: project primary key
     """
     url = f'{base_url}/projects/{project_id}/imports/ec2'
     print(f'GET - {url}')
@@ -118,7 +118,7 @@ def upload_test_evidence(base_url, token, project_id):
 
     :param str base_url: api ip
     :param str token: access token
-    :param project_id: int, project primary key
+    :param int project_id: project primary key
     """
     url = f'{base_url}/projects/{project_id}/imports/upload'
     print(f'POST - {url}')
