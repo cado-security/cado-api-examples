@@ -31,9 +31,9 @@ def generate_fresh_access_token(base_url, username, password):
     """Access auth endpoint using username and password
     to generate Fresh Access Token and Refresh token
 
-    :param base_url: str, api ip
-    :param username: str, platform user
-    :param password: str,  platform user's password
+    :param str base_url: api ip
+    :param str username: platform user
+    :param str password: platform user's password
     """
     url = base_url + '/auth'
     body_params = {
@@ -56,8 +56,8 @@ def generate_access_token_using_refresh_token(base_url, refresh_token):
     """Generate access token using refresh token
     -> this token is NOT FRESH
 
-    :param base_url: str, api ip
-    :param refresh_token: str,
+    :param str base_url: api ip
+    :param str refresh_token:
     """
     url = base_url + '/auth/refresh'
     print(f'POST - {url}')

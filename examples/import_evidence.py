@@ -20,11 +20,11 @@ import requests
 def import_ec2_instance(base_url, token, project_id, instance, bucket):
     """Start a new task to acquire (import) the given instance id
 
-    :param base_url: str, api ip
-    :param token: str, access token
-    :param project_id: int, project primary key
-    :param instance: str, the instace_id to import (see get_instances example in this module)
-    :param bucket: str, 
+    :param str base_url: api ip
+    :param str token: access token
+    :param int project_id: project primary key
+    :param str instance: the instace_id to import (see get_instances example in this module)
+    :param str bucket:
     """
     url = f'{base_url}/projects/{project_id}/imports/ec2'
     print(f'POST - {url}')
@@ -48,9 +48,9 @@ def import_random_ec2_instance(base_url, token, project_id):
     """Get all ec2 instances and import the first one as a new evidence
     to the given porject
 
-    :param base_url: str, api ip
-    :param token: str, access token
-    :param project_id: int, project primary key
+    :param str base_url: api ip
+    :param str token: access token
+    :param int project_id: project primary key
     """
     url = f'{base_url}/projects/{project_id}/imports/ec2'
     # First, get all ec2 instaces:
@@ -92,8 +92,8 @@ def import_random_ec2_instance(base_url, token, project_id):
 def get_instances(base_url, token, project_id):
     """Get all ec2 instances
 
-    :param base_url: str, api ip
-    :param token: str, access token
+    :param str base_url: api ip
+    :param str token: access token
     :param project_id: int, project primary key
     """
     url = f'{base_url}/projects/{project_id}/imports/ec2'
@@ -116,8 +116,8 @@ def upload_test_evidence(base_url, token, project_id):
     """Upload an evidence file and start a new task to process it
      -> This example show how to upload evidence using http request
 
-    :param base_url: str, api ip
-    :param token: str, access token
+    :param str base_url: api ip
+    :param str token: access token
     :param project_id: int, project primary key
     """
     url = f'{base_url}/projects/{project_id}/imports/upload'

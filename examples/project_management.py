@@ -14,9 +14,9 @@ import requests
 def create_new(base_url, token, name):
     """Create new project
     
-    :param base_url: str, api ip
-    :param token: str, access token
-    :param name: str, name for the new project
+    :param str base_url: api ip
+    :param str token: access token
+    :param str name: name for the new project
     """
     url = f'{base_url}/projects'
     print(f'POST - {url}')
@@ -38,10 +38,10 @@ def create_new(base_url, token, name):
 def change_name(base_url, token, project_id, new_name):
     """Change project name
     
-    :param base_url: str, api ip
-    :param token: str, access token
-    :param project_id: int, project primary key
-    :param new_name: str, new name for the project
+    :param str base_url: api ip
+    :param str token: access token
+    :param int project_id: project primary key
+    :param str new_name: new name for the project
     """
     url = f'{base_url}/projects/{project_id}'
     print(f'PUT - {url}')
@@ -63,10 +63,10 @@ def change_name(base_url, token, project_id, new_name):
 def add_user_to_project(base_url, token, project_id, user):
     """Add user to have access to the given project
     
-    :param base_url: str, api ip
-    :param token: str, access token
-    :param project_id: int, project primary key
-    :param user: str, username to add
+    :param str base_url: api ip
+    :param str token: access token
+    :param int project_id: project primary key
+    :param str user: username to add
     """
     # First, get all current users of the project:
     url = f'{base_url}/projects/{project_id}'
@@ -104,9 +104,9 @@ def add_user_to_project(base_url, token, project_id, user):
 def delete_project(base_url, token, project_id):
     """delete given project
     
-    :param base_url: str, api ip
-    :param token: str, access token
-    :param project_id: int, project primary key
+    :param str base_url: api ip
+    :param str token: access token
+    :param int project_id: project primary key
     """
     url = f'{base_url}/projects/{project_id}'
     print(f'DELETE - {url}')
@@ -126,8 +126,8 @@ def delete_project(base_url, token, project_id):
 def delete_all_projects(base_url, token):
     """delete all projects in the platform
     
-    :param base_url: str, api ip
-    :param token: str, access token
+    :param str base_url: api ip
+    :param str token: access token
     """
     url = f'{base_url}/projects'
     print(f'DELETE - {url}')

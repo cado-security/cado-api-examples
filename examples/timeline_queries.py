@@ -53,11 +53,11 @@ def pagination(base_url, token, project_id, page=2, perpage=500):
     -> for the purpose of the example, we provided defaults to the function parameters
        the defaults here is to get the second page of the timeline when there's 500 events per page
 
-    :param base_url: str, api ip
-    :param token: str, access token
-    :param project_id: int, project primary key
-    :param page: int, 
-    :param perpage: int, 
+    :param str base_url: api ip
+    :param str token: access token
+    :param int project_id: project primary key
+    :param int page: 
+    :param int perpage:  
     """
     url = f'{base_url}/projects/{project_id}/timeline?page={page}&perpage={perpage}'
     print(f'GET - {url}')
@@ -83,10 +83,10 @@ def only_evidence_id(base_url, token, project_id, evidence_id=1):
 
     -> for the purpose of the example, we provided defaults to the function parameters
 
-    :param base_url: str, api ip
-    :param token: str, access token
-    :param project_id: int, project primary key
-    :param evidence_id: int,
+    :param str base_url: api ip
+    :param str token: access token
+    :param int project_id: project primary key
+    :param int evidence_id: 
     """
     url = f'{base_url}/projects/{project_id}/timeline?evidence_id={evidence_id}'
     print(f'GET - {url}')
@@ -109,10 +109,10 @@ def severity_range(base_url, token, project_id, severity=5):
     -> for the purpose of the example, we provided defaults to the function parameters
        The default here is to filter by severity between 1-5
 
-    :param base_url: str, api ip
-    :param token: str, access token
-    :param project_id: int, project primary key
-    :param severity: int, top range for the severity attribute
+    :param str base_url: api ip
+    :param str token: access token
+    :param int project_id: project primary key
+    :param int severity: top range for the severity attribute
     """
     url = f'{base_url}/projects/{project_id}/timeline?severity=5'
     print(f'GET - {url}')
@@ -135,12 +135,12 @@ def time_range(base_url, token, project_id, from_t=1581850873, to_t=1613473273):
 
     -> for the purpose of the example, we provided defaults to the function parameters
 
-    :param base_url: str, api ip
-    :param token: str, access token
-    :param project_id: int, project primary key
-    :param from_t: int, unix timestamp lower range
-    :param from_t: int, unix timestamp, the beginning of the range
-    :param to_t: int, unix timestamp, the end of the range
+    :param str base_url: api ip
+    :param str token: access token
+    :param int project_id: project primary key
+    :param int from_t: unix timestamp lower range
+    :param int from_t: unix timestamp, the beginning of the range
+    :param int to_t: unix timestamp, the end of the range
     """
     url = f'{base_url}/projects/{project_id}/timeline?from_timestamp={from_t}&to_timestamp={to_t}'
     print(f'GET - {url}')
@@ -167,10 +167,10 @@ def pivot_results(
 
     -> for the purpose of the example, we provided defaults to the function parameters
 
-    :param base_url: str, api ip
-    :param token: str, access token
-    :param project_id: int, project primary key
-    :param pivot: int, unix timestamp
+    :param str base_url: api ip
+    :param str token: access token
+    :param int project_id: project primary key
+    :param int pivot: unix timestamp
     """
     url = f'{base_url}/projects/{project_id}/timeline?pivot={pivot}'
     print(f'GET - {url}')
@@ -190,9 +190,9 @@ def point_in_time(base_url, token, project_id):
     """Get timeline events from a a specific point in time
     this examples shows that we can use from_timestamp OR to_timestamp as individuals
 
-    :param base_url: str, api ip
-    :param token: str, access token
-    :param project_id: int, project primary key
+    :param str base_url: api ip
+    :param str token: access token
+    :param int project_id: project primary key
     """
     url = f'{base_url}/projects/{project_id}/timeline?from_timestamp=0'
     print(f'GET - {url}')
@@ -221,11 +221,11 @@ def specific_field_value(
     -> for the purpose of the example, we provided defaults to the function parameters
         the default here is to search `File` events by looking in the `tag` column
 
-    :param base_url: str, api ip
-    :param token: str, access token
-    :param project_id: int, project primary key
-    :param field: str, the field to search in
-    :param value: str, the value to search in the field^
+    :param str base_url: api ip
+    :param str token: access token
+    :param int project_id: project primary key
+    :param str field: the field to search in
+    :param str value: the value to search in the field^
     """
     url = f'{base_url}/projects/{project_id}/timeline?{field}={value}'
     print(f'GET - {url}')
@@ -252,10 +252,10 @@ def value_across_fields(
     -> for the purpose of the example, we provided defaults to the function parameters
         the default here is to search the ip `127.0.0.1` in the events
 
-    :param base_url: str, api ip
-    :param token: str, access token
-    :param project_id: int, project primary key
-    :param query: str, 
+    :param str base_url: api ip
+    :param str token: access token
+    :param int project_id: project primary key
+    :param str query: 
     """
     url = f'{base_url}/projects/{project_id}/timeline?query={query}'
     print(f'GET - {url}')
