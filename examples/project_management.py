@@ -15,7 +15,7 @@ def create_new(base_url, token, name):
     """Create new project
     
     :param str base_url: api ip
-    :param str token: access token
+    :param str token: API Key
     :param str name: name for the new project
     """
     url = f'{base_url}/projects'
@@ -26,7 +26,8 @@ def create_new(base_url, token, name):
         json=body_params,
         headers={
             'Authorization': 'Bearer ' + token
-        }
+        },
+        verify=False
     )
     # work with return value
     # result.status_code
@@ -39,7 +40,7 @@ def change_name(base_url, token, project_id, new_name):
     """Change project name
     
     :param str base_url: api ip
-    :param str token: access token
+    :param str token: API Key
     :param int project_id: project primary key
     :param str new_name: new name for the project
     """
@@ -51,7 +52,8 @@ def change_name(base_url, token, project_id, new_name):
         json=body_params,
         headers={
             'Authorization': 'Bearer ' + token
-        }
+        },
+        verify=False
     )
     # work with return value
     # result.status_code
@@ -64,7 +66,7 @@ def add_user_to_project(base_url, token, project_id, user):
     """Add user to have access to the given project
     
     :param str base_url: api ip
-    :param str token: access token
+    :param str token: API Key
     :param int project_id: project primary key
     :param str user: username to add
     """
@@ -74,7 +76,8 @@ def add_user_to_project(base_url, token, project_id, user):
         url,
         headers={
             'Authorization': 'Bearer ' + token
-        }
+        },
+        verify=False
     )
     current_users = result.json()['users']
 
@@ -92,7 +95,8 @@ def add_user_to_project(base_url, token, project_id, user):
         json=body_params,
         headers={
             'Authorization': 'Bearer ' + token
-        }
+        },
+        verify=False
     )
     # work with return value
     # result.status_code
@@ -105,7 +109,7 @@ def delete_project(base_url, token, project_id):
     """delete given project
     
     :param str base_url: api ip
-    :param str token: access token
+    :param str token: API Key
     :param int project_id: project primary key
     """
     url = f'{base_url}/projects/{project_id}'
@@ -114,7 +118,8 @@ def delete_project(base_url, token, project_id):
         url,
         headers={
             'Authorization': 'Bearer ' + token
-        }
+        },
+        verify=False
     )
     # work with return value
     # result.status_code
@@ -127,7 +132,7 @@ def delete_all_projects(base_url, token):
     """delete all projects in the platform
     
     :param str base_url: api ip
-    :param str token: access token
+    :param str token: API Key
     """
     url = f'{base_url}/projects'
     print(f'DELETE - {url}')
@@ -135,7 +140,8 @@ def delete_all_projects(base_url, token):
         url,
         headers={
             'Authorization': 'Bearer ' + token
-        }
+        },
+        verify=False
     )
     # work with return value
     # result.status_code
@@ -149,18 +155,10 @@ def delete_all_projects(base_url, token):
 if __name__ == '__main__':
     from random import randint
     import config
-    from authentication import generate_fresh_access_token
-
-    tokens = generate_fresh_access_token(
-        config.API_URL,
-        config.USERNAME,
-        config.PASSWORD
-    ).json()
-    access_token = tokens['token']
     
     # Create new project
     random_project_name = 'project_' + str(randint(0, 10000))
-    create_project_result = create_new(config.API_URL, access_token, random_project_name)
+    create_project_result = create_new(config.API_URL, config.API_KEY, random_project_name)
     if create_project_result.status_code == 201:
         print('New project created: ', random_project_name)
     else:
@@ -169,11 +167,8 @@ if __name__ == '__main__':
     # Update the project's name
     project_id = create_project_result.json()['id']
     new_name = random_project_name + '_new'
-    chnage_name_result = change_name(config.API_URL, access_token, project_id, new_name)
+    chnage_name_result = change_name(config.API_URL, config.API_KEY, project_id, new_name)
     if chnage_name_result.status_code == 200:
         print('Project name changed: ', new_name)
     else:
         quit('Cannot change project name: ' + str(chnage_name_result.status_code))
-    
-    # Add user:
-    # add_user_to_project(config.API_URL, access_token, project_id, 'someusername')

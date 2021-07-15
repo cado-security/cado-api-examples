@@ -21,7 +21,7 @@ def import_ec2_instance(base_url, token, project_id, instance, bucket):
     """Start a new task to acquire (import) the given instance id
 
     :param str base_url: api ip
-    :param str token: access token
+    :param str token: API Key
     :param int project_id: project primary key
     :param str instance: the instace_id to import (see get_instances example in this module)
     :param str bucket:
@@ -37,7 +37,8 @@ def import_ec2_instance(base_url, token, project_id, instance, bucket):
         json=body_params,
         headers={
             'Authorization': 'Bearer ' + token
-        }
+        },
+        verify=False
     )
     # work with the result:
     # result['task_id']
@@ -49,7 +50,7 @@ def import_random_ec2_instance(base_url, token, project_id):
     to the given porject
 
     :param str base_url: api ip
-    :param str token: access token
+    :param str token: API Key
     :param int project_id: project primary key
     """
     url = f'{base_url}/projects/{project_id}/imports/ec2'
@@ -59,7 +60,8 @@ def import_random_ec2_instance(base_url, token, project_id):
         url,
         headers={
             'Authorization': 'Bearer ' + token
-        }
+        },
+        verify=False
     ).json()
 
     # Then, get all s3 buckets (we need one to import ec2):
@@ -68,7 +70,8 @@ def import_random_ec2_instance(base_url, token, project_id):
         url.replace('ec2', 's3'), # use s3 resource, not ec2
         headers={
             'Authorization': 'Bearer ' + token
-        }
+        },
+        verify=False
     ).json()
 
     # Acquire(import) the first one:
@@ -82,7 +85,8 @@ def import_random_ec2_instance(base_url, token, project_id):
         json=body_params,
         headers={
             'Authorization': 'Bearer ' + token
-        }
+        },
+        verify=False
     )
     # work with the result:
     # result['task_id']
@@ -93,7 +97,7 @@ def get_instances(base_url, token, project_id):
     """Get all ec2 instances
 
     :param str base_url: api ip
-    :param str token: access token
+    :param str token: API Key
     :param int project_id: project primary key
     """
     url = f'{base_url}/projects/{project_id}/imports/ec2'
@@ -102,7 +106,8 @@ def get_instances(base_url, token, project_id):
         url,
         headers={
             'Authorization': 'Bearer ' + token
-        }
+        },
+        verify=False
     )
     
     # Working with the result
@@ -112,43 +117,10 @@ def get_instances(base_url, token, project_id):
     return result
 
 
-def upload_test_evidence(base_url, token, project_id):
-    """Upload an evidence file and start a new task to process it
-     -> This example show how to upload evidence using http request
-
-    :param str base_url: api ip
-    :param str token: access token
-    :param int project_id: project primary key
-    """
-    url = f'{base_url}/projects/{project_id}/imports/upload'
-    print(f'POST - {url}')
-
-    data = {
-        'file': open('./data/import_test.dd', 'rb') # read file binary
-    }
-    result = requests.post(
-        url,
-        headers={
-            'Authorization': 'Bearer ' + token
-        },
-        files=data
-    )
-
-    # work with the result:
-    # result['task_id']
-    return result
-
-
 if __name__ == '__main__':
     import config
-    from authentication import generate_fresh_access_token
-
-    tokens = generate_fresh_access_token(
+    import_random_ec2_instance(
         config.API_URL,
-        config.USERNAME,
-        config.PASSWORD
-    ).json()
-    access_token = tokens['token']
-
-    # upload_test_evidence(config.API_URL, access_token, config.TEST_PROJECT_ID)
-    # import_random_ec2_instance(config.API_URL, access_token, config.TEST_PROJECT_ID)
+        config.API_KEY,
+        config.TEST_PROJECT_ID
+    )

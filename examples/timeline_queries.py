@@ -54,7 +54,7 @@ def pagination(base_url, token, project_id, page=2, perpage=500):
        the defaults here is to get the second page of the timeline when there's 500 events per page
 
     :param str base_url: api ip
-    :param str token: access token
+    :param str token: API Key
     :param int project_id: project primary key
     :param int page: 
     :param int perpage:  
@@ -65,7 +65,8 @@ def pagination(base_url, token, project_id, page=2, perpage=500):
         url,
         headers={
             'Authorization': 'Bearer ' + token
-        }
+        },
+        verify=False
     )
     # work with return value
     # result.status_code
@@ -84,7 +85,7 @@ def only_evidence_id(base_url, token, project_id, evidence_id=1):
     -> for the purpose of the example, we provided defaults to the function parameters
 
     :param str base_url: api ip
-    :param str token: access token
+    :param str token: API Key
     :param int project_id: project primary key
     :param int evidence_id: 
     """
@@ -94,7 +95,8 @@ def only_evidence_id(base_url, token, project_id, evidence_id=1):
         url,
         headers={
             'Authorization': 'Bearer ' + token
-        }
+        },
+        verify=False
     )
     # work with return value
     # result.status_code
@@ -110,7 +112,7 @@ def severity_range(base_url, token, project_id, severity=5):
        The default here is to filter by severity between 1-5
 
     :param str base_url: api ip
-    :param str token: access token
+    :param str token: API Key
     :param int project_id: project primary key
     :param int severity: top range for the severity attribute
     """
@@ -120,7 +122,8 @@ def severity_range(base_url, token, project_id, severity=5):
         url,
         headers={
             'Authorization': 'Bearer ' + token
-        }
+        },
+        verify=False
     )
     # work with return value
     # result.status_code
@@ -136,7 +139,7 @@ def time_range(base_url, token, project_id, from_t=1581850873, to_t=1613473273):
     -> for the purpose of the example, we provided defaults to the function parameters
 
     :param str base_url: api ip
-    :param str token: access token
+    :param str token: API Key
     :param int project_id: project primary key
     :param int from_t: unix timestamp lower range
     :param int from_t: unix timestamp, the beginning of the range
@@ -148,7 +151,8 @@ def time_range(base_url, token, project_id, from_t=1581850873, to_t=1613473273):
         url,
         headers={
             'Authorization': 'Bearer ' + token
-        }
+        },
+        verify=False
     )
     # work with return value
     # result.status_code
@@ -168,7 +172,7 @@ def pivot_results(
     -> for the purpose of the example, we provided defaults to the function parameters
 
     :param str base_url: api ip
-    :param str token: access token
+    :param str token: API Key
     :param int project_id: project primary key
     :param int pivot: unix timestamp
     """
@@ -178,7 +182,8 @@ def pivot_results(
         url,
         headers={
             'Authorization': 'Bearer ' + token
-        }
+        },
+        verify=False
     )
     # work with return value
     # result.status_code
@@ -191,7 +196,7 @@ def point_in_time(base_url, token, project_id):
     this examples shows that we can use from_timestamp OR to_timestamp as individuals
 
     :param str base_url: api ip
-    :param str token: access token
+    :param str token: API Key
     :param int project_id: project primary key
     """
     url = f'{base_url}/projects/{project_id}/timeline?from_timestamp=0'
@@ -200,7 +205,8 @@ def point_in_time(base_url, token, project_id):
         url,
         headers={
             'Authorization': 'Bearer ' + token
-        }
+        },
+        verify=False
     )
     # work with return value
     # result.status_code
@@ -222,7 +228,7 @@ def specific_field_value(
         the default here is to search `File` events by looking in the `tag` column
 
     :param str base_url: api ip
-    :param str token: access token
+    :param str token: API Key
     :param int project_id: project primary key
     :param str field: the field to search in
     :param str value: the value to search in the field^
@@ -233,7 +239,8 @@ def specific_field_value(
         url,
         headers={
             'Authorization': 'Bearer ' + token
-        }
+        },
+        verify=False
     )
     # work with return value
     # result.status_code
@@ -253,7 +260,7 @@ def value_across_fields(
         the default here is to search the ip `127.0.0.1` in the events
 
     :param str base_url: api ip
-    :param str token: access token
+    :param str token: API Key
     :param int project_id: project primary key
     :param str query: 
     """
@@ -263,7 +270,8 @@ def value_across_fields(
         url,
         headers={
             'Authorization': 'Bearer ' + token
-        }
+        },
+        verify=False
     )
     # work with return value
     # result.status_code
@@ -275,19 +283,11 @@ if __name__ == '__main__':
     # This example assume that there's an existing project
     # in the platform and some test data to work with
     import config 
-    from authentication import generate_fresh_access_token
 
-    tokens = generate_fresh_access_token(
-        config.API_URL,
-        config.USERNAME,
-        config.PASSWORD
-    ).json()
-    access_token = tokens['token']
-
-    print('***************<[--PAFINATION RESULTS--]>***************')
+    print('***************<[--PAGINATION RESULTS--]>***************')
     result = pagination(
         base_url=config.API_URL,
-        token=access_token,
+        token=config.API_KEY,
         project_id=config.TEST_PROJECT_ID
     )
     if result.status_code == 200:

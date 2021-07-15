@@ -7,33 +7,29 @@
 # Check the folder(^) for more examples on a specific topic.
 #############################################################
 #                          STAGES:                          #
-#  1) Authenticate with the api
-#  2) Create new project
-#  3) Import test data
-#  4) Retrieve the data with different filters 
+#  1) Create new project
+#  2) Import test data
+#  3) Retrieve the data with different filters 
 #############################################################
 import requests
+import urllib3
 from time import sleep
 from random import randint
+
 import config
 
+print('**************************************')
+print('About to preform the following stages:')
+print('1) Create new project')
+print('2) Get random ec2 instance id to import')
+print('3) Import ec2 instance base on id^')
+print('4) Retrieve the data with different filters ')
+print('**************************************')
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 #################################################
-# 1. Authenticate:
-print('Generate access token:')
-auth_url = config.API_URL + '/auth'
-body_params = {
-    'username': config.USERNAME,
-    'password': config.PASSWORD
-}
-print(f'->> POST - {auth_url}')
-auth_result = requests.post(auth_url, json=body_params)
-access_token = auth_result.json()['token']
-
-
-#################################################
-# 2. Create new project:
-print('Create new project:')
+# 1. Create new project:
+print('Creating new project...')
 projects_url = config.API_URL + '/projects'
 print(f'->> POST - {projects_url}')
 new_project_name = 'newProject' + str(randint(0, 10000))
@@ -42,43 +38,53 @@ project_result = requests.post(
     projects_url,
     json=body_params,
     headers={
-        'Authorization': 'Bearer ' + access_token
-    }
+        'Authorization': 'Bearer ' + config.API_KEY
+    },
+    verify=False
 )
 project_id = project_result.json()['id']
 
 
 #################################################
-# 3. Upload test data:
-print('Upload test data:')
-upload_url = f'{config.API_URL}/projects/{project_id}/imports/upload'
-print(f'->> POST - {upload_url}')
-data = {
-    'file': open('./data/import_test.dd', 'rb') # read file binary
-}
-upload_result = requests.post(
-    upload_url,
+# 2. Get random ec2 instance id to import:
+print('Getting ec2 instance from the cloud...')
+get_ec2_instances_url = f'{config.API_URL}/projects/{project_id}/imports/ec2'
+print(f'->> GET - {get_ec2_instances_url}')
+instances_results = requests.get(
+    get_ec2_instances_url,
+    headers={'Authorization': 'Bearer ' + config.API_KEY},
+    verify=False
+)
+first_instance = instances_results.json()['instances'][0]['id']
+
+#################################################
+# 3. Import instance
+print('About to import instance: ', first_instance)
+body_params = {'instance_id': first_instance, 'bucket': ''}
+result = requests.post(
+    get_ec2_instances_url,
+    json=body_params,
     headers={
-        'Authorization': 'Bearer ' + access_token
+        'Authorization': 'Bearer ' + config.API_KEY
     },
-    files=data
+    verify=False
 )
 
 print('Sleeping 5 minutes until data will be process...')
 sleep(300)
 print('Wake up')
 
-
 #################################################
 # 4. Search the timeline:
 print('Get first 10 results from the timeline:')
 timeline_url = f'{config.API_URL}/projects/{project_id}/timeline?perpage=10'
-print(f'->> GET - {upload_url}')
+print(f'->> GET - {timeline_url}')
 timeline_result = requests.get(
     timeline_url,
     headers={
-        'Authorization': 'Bearer ' + access_token
+        'Authorization': 'Bearer ' + config.API_KEY
     },
+    verify=False
 )
 
 print('results:')
