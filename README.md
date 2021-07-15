@@ -28,7 +28,6 @@ TEST_PROJECT_ID = 1                         # project that already exists
 ```
 
 6. Run examples!
-
 End-to-End example can be found in the module `examples/end_to_end_example.py`!
 to run the examples:
 ```
