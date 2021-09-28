@@ -1,5 +1,6 @@
 # Cado API Code Examples
 This repository contains code examples for integration with the Cado API using Python and the Requests library.
+
 The examples assumes that you have the Cado Response platform and a user with admin privileges.
 
 # Getting started
@@ -10,6 +11,7 @@ Make sure your Cado Response platform is up and running and that you have an exi
 
 2. Create API Key
 In the platform, go to Settings -> API -> Create New Key
+
 Make a note of the Secret Key.
 
 3. Clone the repository:
