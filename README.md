@@ -7,6 +7,7 @@ The examples assumes that you have the Cado Response platform and a user with ad
 Before you can run any of the examples under the `./examples` folder you should follow these steps:
 
 1. Prepare your platform:
+
 Make sure your Cado Response platform is up and running and that you have an existing project with evidence imported (required for some of the examples, e.g. the timeline search example).
 
 2. Create API Key
@@ -37,7 +38,10 @@ python3 examples/end_to_end_example.py
 ```
 
 8. Note:
-There are many examples and explanations inside each module. Only a few of the examples run automatically when executing the module as in the above^ so please open and read each module for full explantaion and examples on a specific topic.
+
+There are many examples and explanations inside each module.
+
+Only a few of the examples run automatically when executing the module as in the above^ so please open and read each module for full explanation and examples on a specific topic.
 
 ```
 python3 examples/timeline_queries.py
