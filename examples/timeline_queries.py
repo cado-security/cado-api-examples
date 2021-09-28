@@ -1,6 +1,6 @@
 # Copyright 2020 Cado Security Ltd. All rights reserved #
 #########################################################
-#       Examples for retrieving data from timeline      #
+#       Examples for retrieving data from the timeline  #
 #########################################################
 #                      Base URL:                        #
 #         /projects/<int:project_id>/timeline           #
@@ -14,8 +14,9 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # 3) `severity` and `alarm_severity`
 ## ->
-### `severity` is a range, so by given 5
-### the range will be between 1-5 (up to 10 severities)
+### `severity` is a range, with 1 being malicious events
+### 3 being suspicious or malicious evnets and 10 being
+### all events
 ### If you want a specific severity (not a range),
 ### you can use the arg `alarm_severity` instead
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -50,8 +51,8 @@ import requests
 def pagination(base_url, token, project_id, page=2, perpage=500):
     """Get timeline events and modify the default pagination parameters
 
-    -> for the purpose of the example, we provided defaults to the function parameters
-       the defaults here is to get the second page of the timeline when there's 500 events per page
+    -> for the purpose of the example, we provide defaults to the function parameters
+       the defaults here is to get the second page of the timeline when there are 500 events per page
 
     :param str base_url: api ip
     :param str token: API Key
@@ -72,9 +73,9 @@ def pagination(base_url, token, project_id, page=2, perpage=500):
     # result.status_code
     # result = result.json()
     # result['page'] # What page are we?
-    # result['per_page'] # How much shown in this page
-    # result['pages'] # how many pages there's
-    # result['total'] # All total result for that specific searchj
+    # result['per_page'] # How much is shown in this page
+    # result['pages'] # How many pages are there
+    # result['total'] # All total result for that specific search
     # result['results'] # Timeline results
     return result
 
@@ -82,7 +83,7 @@ def pagination(base_url, token, project_id, page=2, perpage=500):
 def only_evidence_id(base_url, token, project_id, evidence_id=1):
     """Get timeline events for a specific evidence
 
-    -> for the purpose of the example, we provided defaults to the function parameters
+    -> for the purpose of the example, we provide defaults to the function parameters
 
     :param str base_url: api ip
     :param str token: API Key
@@ -108,7 +109,7 @@ def only_evidence_id(base_url, token, project_id, evidence_id=1):
 def severity_range(base_url, token, project_id, severity=5):
     """Get timeline events that are in a severity range
     
-    -> for the purpose of the example, we provided defaults to the function parameters
+    -> for the purpose of the example, we provide defaults to the function parameters
        The default here is to filter by severity between 1-5
 
     :param str base_url: api ip
@@ -136,7 +137,7 @@ def time_range(base_url, token, project_id, from_t=1581850873, to_t=1613473273):
     """Get timeline events that between time range
     time range defined by unix timestamp https://www.unixtimestamp.com/
 
-    -> for the purpose of the example, we provided defaults to the function parameters
+    -> for the purpose of the example, we provide defaults to the function parameters
 
     :param str base_url: api ip
     :param str token: API Key
@@ -167,9 +168,9 @@ def pivot_results(
     project_id,
     pivot=1581850873
     ):
-    """Get timeline events that occured 2 minutes beforer and after the given pivot timestamp
+    """Get timeline events that occured 2 minutes before and after the given pivot timestamp
 
-    -> for the purpose of the example, we provided defaults to the function parameters
+    -> for the purpose of the example, we provide defaults to the function parameters
 
     :param str base_url: api ip
     :param str token: API Key
@@ -192,7 +193,7 @@ def pivot_results(
 
 
 def point_in_time(base_url, token, project_id):
-    """Get timeline events from a a specific point in time
+    """Get timeline events from a specific point in time
     this examples shows that we can use from_timestamp OR to_timestamp as individuals
 
     :param str base_url: api ip
@@ -224,7 +225,7 @@ def specific_field_value(
     ):
     """Get timeline events filter by specific field value,
 
-    -> for the purpose of the example, we provided defaults to the function parameters
+    -> for the purpose of the example, we provide defaults to the function parameters
         the default here is to search `File` events by looking in the `tag` column
 
     :param str base_url: api ip
@@ -254,10 +255,10 @@ def value_across_fields(
     project_id,
     query='127.0.0.1'
     ):
-    """Get timeline events that has the gevin value in one of the fields,
+    """Get timeline events that have the given value in one of the fields
 
-    -> for the purpose of the example, we provided defaults to the function parameters
-        the default here is to search the ip `127.0.0.1` in the events
+    -> for the purpose of the example, we provide defaults to the function parameters
+        the default here is to search the IP `127.0.0.1` in the events
 
     :param str base_url: api ip
     :param str token: API Key
@@ -282,7 +283,7 @@ def value_across_fields(
 if __name__ == '__main__':
     # This example assume that there's an existing project
     # in the platform and some test data to work with
-    import config 
+    import config
 
     print('***************<[--PAGINATION RESULTS--]>***************')
     result = pagination(

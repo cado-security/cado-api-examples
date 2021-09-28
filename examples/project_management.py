@@ -3,7 +3,7 @@
 #         Manage projects in the platform examples          #
 #############################################################
 # This module includes examples for management project in the
-# platform. for example:
+# platform. For example:
 #   1) Create new and delete existing project
 #   2) Update project's details
 #   3) Enable access for users to a project
@@ -14,7 +14,7 @@ import requests
 def create_new(base_url, token, name):
     """Create new project
     
-    :param str base_url: api ip
+    :param str base_url: API ip
     :param str token: API Key
     :param str name: name for the new project
     """
