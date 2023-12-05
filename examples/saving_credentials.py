@@ -1,11 +1,13 @@
-#   Copyright 2020 Cado Security Ltd. All rights reserved   #
-#############################################################
-#                      Overall example                      #
-#############################################################
-# This is an overall example that use a combination of sub-
-# examples from the other modules in this folder (/examples).
-# Check the folder(^) for more examples on a specific topic.
-#############################################################
+"""
+Copyright 2023 Cado Security Ltd. All rights reserved
+
+This is an example of adding roles to the platform over the API.
+To use, set the Platform API and Secret Key in config.py
+Then add the roles to roles.csv in the format:
+role,alias
+Where role is the full arn of the role, e.g. arn:aws:iam::0001:role/CadoResponseRole
+And the Alias is the name you want to save the credentials under to be viewable in the UI, e.g. My Role
+"""
 
 
 import requests
@@ -55,13 +57,14 @@ def post_role_batch(base_url, token, csv_file_path):
         csv_reader = csv.reader(csvfile)
         for row in csv_reader:
             role = row[0]
+            alias = row[1]
             response = post_role(
                 base_url=base_url, 
-                token=token, 
-                role=role, 
-                alias=role[13:]
+                token=token,
+                role=role,
+                alias=alias,
             )
-            print(f"Role: {role}, Status: {response.status_code}, Response: {response.text}")
+            print(f"Add Role: [{role} with Alias [{alias}], Status: {response.status_code}, Response: {response.text}")
 
 
 if __name__ == '__main__':
@@ -69,5 +72,5 @@ if __name__ == '__main__':
     post_role_batch(
         config.API_URL,
         config.API_KEY,
-        "example_csv.csv"
+        "roles.csv"
     )
