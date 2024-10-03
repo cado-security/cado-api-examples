@@ -24,10 +24,12 @@ git clone https://github.com/cado-security/cado-api-examples.git
 
 5. Edit `the examples/config.py` file to fit to your platform:
 ```python
-PLATFORM_IP = '127.0.0.1'                   # Change to the ip of the platform
-API_URL = f'https://{PLATFORM_IP}/api/v2' # Don't edit this value
+PLATFORM_IP = '127.0.0.1'                   # Change to the IP of the platform
+API_URL = f'https://{PLATFORM_IP}/api/v3'   # Don't edit this value
 API_KEY = ''                                # API Key generated in settings
 TEST_PROJECT_ID = 1                         # any project that already exists
+CLOUD_ID = 'Default'                        # A cloud id that's already configured in the platform
+REGION = 'us-east-1'                        # A region in AWS that has available EC2 instances
 ```
 
 7. Run examples!
