@@ -30,8 +30,8 @@ def post_role(base_url, token, role, alias):
     :param str alias: The alias to save the credentials under
     """
 
-    url = f"{base_url}/clouds/aws"
-    body_params = {"credentials": {"role": role}, "cloud_id": alias}
+    url = f"{base_url}/accounts"
+    body_params = {"credential_data": {"role": role}, "account_name": alias, "account_type": "aws"}
     result = requests.post(url, json=body_params, headers={"Authorization": "Bearer " + token}, verify=False)
     return result
 
