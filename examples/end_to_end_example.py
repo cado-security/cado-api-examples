@@ -33,7 +33,7 @@ print('Creating a new project...')
 projects_url = config.API_URL + '/projects'
 print(f'->> POST - {projects_url}')
 new_project_name = 'newProject' + str(randint(0, 10000))
-body_params = {'caseName': new_project_name}
+body_params = {'case_name': new_project_name}
 project_result = requests.post(
     projects_url,
     json=body_params,
